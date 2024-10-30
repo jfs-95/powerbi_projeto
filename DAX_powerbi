@@ -1,0 +1,66 @@
+Medidas DAX utilizadas no DASHBOARD Projeto
+
+Total Desconto = [Total Orçado]-[Total Pago] / Operação de subtração
+
+--- EXPLICAÇÃO --
+
+Total Leads = 
+CALCULATE(
+    COUNTROWS(Projetos),
+    Projetos[Data Início]=BLANK()
+)
+
+Explicação dos Componentes:
+CALCULATE: Modifica o contexto de cálculo para aplicar um filtro específico.
+COUNTROWS(Projetos): Conta o total de linhas na tabela Projetos.
+Projetos[Data Início] = BLANK(): Filtro que considera apenas as linhas onde a coluna Data Início está vazia (sem valor).
+Assim, Total Leads retorna o número de projetos que ainda não possuem uma data de início definida.
+
+--------------------
+
+Total Oportunidades = COUNTROWS(Projetos) / COUNTROWS(Projetos): Conta o total de linhas na tabela Projetos.
+
+--- EXPLICAÇÃO --
+
+Total Orçado = 
+CALCULATE(
+    SUM(Projetos[Valor Orçado]),
+    Projetos[Data Início]<>BLANK()
+)
+
+Explicação Breve:
+CALCULATE ajusta o contexto da soma com base em um filtro.
+SUM(Projetos[Valor Orçado]) soma todos os valores orçados.
+Projetos[Data Início] <> BLANK() aplica um filtro para considerar apenas projetos com data de início.
+Resultado: A soma dos valores orçados somente para os projetos que já têm uma data de início definida.
+
+--------------------
+
+Total Orçado Geral = SUM(Projetos[Valor Orçado]) / Soma todos os valores orçados.
+
+--- EXPLICAÇÃO --
+
+Total Pago = CALCULATE(
+    SUM(Projetos[Valor Negociado]),
+    Projetos[Data Início]<>BLANK()
+)
+
+CALCULATE: Modifica o contexto de cálculo para aplicar um filtro.
+SUM(Projetos[Valor Negociado]): Soma todos os valores da coluna Valor Negociado.
+Projetos[Data Início] <> BLANK(): Filtra apenas os projetos que têm uma data de início preenchida.
+Resultado: A soma dos valores negociados para os projetos que já possuem uma data de início.
+
+--------------------
+
+--- EXPLICAÇÃO --
+
+Total Projetos Fechados = CALCULATE(
+    COUNTROWS(Projetos),
+    Projetos[Data Início]<>BLANK()
+)
+
+Explicação Breve:
+CALCULATE: Ajusta o contexto do cálculo para aplicar um filtro.
+COUNTROWS(Projetos): Conta o número total de linhas (projetos) na tabela Projetos.
+Projetos[Data Início] <> BLANK(): Filtra apenas os projetos que têm uma data de início registrada (não estão em branco).
+Resultado: O número de projetos que já foram iniciados, ou seja, que possuem uma data de início definida.
